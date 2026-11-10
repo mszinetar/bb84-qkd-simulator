@@ -1,0 +1,18 @@
+:root {
+  --frame: #ffa600;
+  --darkorange: #a74804;
+  --peach: #fff3de;
+  --tile: #f4f4f4;
+  --sky: #daf4fe;
+  --danger: #f25a67;
+  --danger-light: #FCDCDF;
+  --ok: #24B853;
+  --ok-light: #DEF4E5;
+  --ink: #191919;
+  --shadow: rgba(0 0 0 0.25);
+
+  --radius-card: 1rem;
+  --radius-tile: 0.625rem;
+  --stroke-card: 2.5px;
+  --gutter: 0.75rem;
+}

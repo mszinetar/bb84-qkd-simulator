@@ -1,0 +1,124 @@
+.dialog {
+  width: min(52rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  padding: 0;                       
+  margin: auto;
+  background: var(--sky);
+  border: var(--stroke-card) solid var(--ink);
+  border-radius: var(--radius-card);
+  color: var(--ink);
+  overflow: auto;
+}
+.dialog::backdrop {
+  background: rgb(255 255 255 / 0.35);
+  backdrop-filter: blur(6px);
+}
+
+.form { display: flex; flex-direction: column; gap: 0.75rem; padding: 1.5rem; }
+.heading { display: flex; align-items: center; gap: 0.5rem; font-size: 1.125rem; }
+.sectionTitle { font-size: 0.875rem; font-weight: 600; margin-top: 0.5rem; }
+.hint { font-size: 0.75rem; color: var(--muted); }
+
+.modeFrame {
+  width: fit-content;
+  padding: 0.5rem;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+}
+.modeCard {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem;
+  min-width: 20rem; padding: 0.75rem;
+  background: var(--tile);
+  border: 1px solid #cfcfcf;
+  border-radius: var(--radius-tile);
+  cursor: pointer;
+}
+.modeText { display: flex; flex-direction: column; gap: 0.25rem; }
+.modeTitle { font-weight: 600; }
+
+.switch {
+  appearance: none;
+  flex-shrink: 0;
+  width: 2.25rem; height: 1.25rem;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.switch::after {
+  content: "";
+  position: absolute; top: 2px; left: 2px;
+  width: 0.75rem; height: 0.75rem;
+  background: var(--ink);
+  border-radius: 50%;
+  transition: transform 0.15s, background 0.15s;
+}
+.switch:checked { background: var(--ink); }
+.switch:checked::after { background: #fff; transform: translateX(1rem); }
+.switch:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.configPanel {
+  display: flex; flex-direction: column; gap: 1.25rem;
+  padding: 1.25rem;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+}
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 2rem; }
+.field { display: flex; flex-direction: column; gap: 0.375rem; }
+.fieldLabel { font-weight: 600; }
+.inputWrap { position: relative; display: flex; align-items: center; }
+.input {
+  width: 100%; padding: 0.375rem 0.625rem;
+  background: #fff;
+  border: 1px solid #d4d4d4;
+  border-radius: var(--radius-tile);
+}
+.input[aria-invalid="true"] { border-color: var(--danger); }
+.suffix { position: absolute; right: 0.625rem; font-size: 0.75rem; color: var(--muted); pointer-events: none; }
+
+.basesTitle { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; margin-bottom: 0.5rem; }
+.badgeRandom, .badgeManual {
+  padding: 0.0625rem 0.5rem; font-size: 0.6875rem; font-weight: 500; border-radius: 999px;
+}
+.badgeRandom { background: var(--peach); color: #b8741a; }
+.badgeManual { background: var(--peach); color: #b8741a; }
+
+.manualScroll { overflow-x: auto; padding-bottom: 0.5rem; }
+.manualGrid {
+  --cell: 2rem;
+  display: grid;
+  grid-template-columns: 9rem repeat(var(--n), var(--cell));
+  gap: 0.5rem 0.375rem;
+  align-items: center;
+  width: max-content;
+}
+.rowLabel { font-size: 0.8125rem; font-weight: 600; }
+
+.bitBox {
+  width: var(--cell); height: var(--cell);
+  text-align: center; font-weight: 600;
+  background: #fff;
+  border: 1px solid #d4d4d4;
+  border-radius: var(--radius-tile);
+}
+.bitBox:focus { border-color: var(--ink); }
+
+.baseCell { display: flex; flex-direction: column; gap: 0.25rem; }
+.baseOff, .baseOn {
+  display: grid; place-items: center;
+  width: var(--cell); height: 1.625rem;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-tile);
+  cursor: pointer;
+}
+.baseOff { background: #fff; color: var(--muted); border-color: #d4d4d4; }
+.baseOff:hover { border-color: var(--ink); color: var(--ink); }
+.baseOn { background: var(--sky); color: var(--ink); }
+
+.actions { display: flex; justify-content: flex-end; gap: 0.75rem; }
+
+:global(body:has(dialog[open])) { overflow: hidden; }

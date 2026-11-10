@@ -1,0 +1,126 @@
+.scroll {
+  flex: 1;
+  max-height: 220px;       
+  overflow-y: auto;
+  min-height: 200px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;  
+  border-spacing: 0;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+
+.table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0.5rem 0.75rem;
+  background: var(--tile);
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+}
+.table th:first-child { border-radius: var(--radius-tile) 0 0 var(--radius-tile); }
+.table th:last-child  { border-radius: 0 var(--radius-tile) var(--radius-tile) 0; }
+
+.table td {
+  padding: 0.5rem 0.75rem;
+  white-space: nowrap;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+}
+.table tbody tr:last-child td { border-bottom: 0; }
+.table tbody tr:hover td { background: color-mix(in srgb, var(--tile) 60%, transparent); }
+
+
+.bit { font-weight: 600; }
+.basis { 
+    display: flex;
+    align-items: center;
+    color: var(--ink);
+}
+
+.ref {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--muted);
+}
+
+.refBad {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--danger);
+}
+
+.ket {
+  margin-left: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 600;
+  background-color: var(--sky);
+  padding: 0.3rem;
+  border-radius: 5px;
+}
+
+.seq   { color: var(--muted); }
+.muted { color: var(--muted); }
+
+.empty {
+  padding-block: 1.5rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.badgeOk, .badgeOff, .badgeWarn, .badgeSuccess, .badgeDanger {
+  display: inline-block;
+  padding: 0.0625rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  border-radius: 999px;
+}
+.badgeOk   { background: var(--ok-light); color: var(--ok); }
+.badgeDanger { background: var(--danger-light); color: var(--danger); }
+.badgeOff  { background: var(--tile); color: var(--muted); }
+.badgeWarn { background: var(--peach); color: #b8741a; }
+.badgeSuccess { background: var(--ok-light); color: var(--ok) }
+
+.bitAndBaseContainer {
+  display: inline-flex;          
+  align-items: center;
+  gap: 0.2rem;               
+  padding: 0.125rem 0.5rem;      
+  background-color: var(--sky);
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.table th, td {
+    max-width: 140px;
+}
+
+.table th.intercept,
+.table td.intercept {
+  width: 1%;              
+  white-space: nowrap;    
+  text-align: center;    
+  padding-inline: 0.5rem 2rem;  
+}
+
+.rowGreyed {
+  opacity: 0.3;
+  transition: opacity 0.2s ease;
+}
+
+/* Ensure the discarded badge pops through the row dimming */
+.rowGreyed .badgeDanger {
+  opacity: 1;
+}
+
+/* Optional: disable the hover row highlight for discarded rows */
+.table tbody tr.rowGreyed:hover td {
+  background: transparent;
+}

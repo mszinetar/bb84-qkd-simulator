@@ -1,0 +1,47 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  background: var(--frame, #f3f4f6);
+  border: 2px solid var(--ink, #111827);
+  border-radius: 0.5rem;
+  color: var(--darkorange, #f97316);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.link {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  align-self: flex-end;
+}
+
+.link:hover {
+  color: var(--darkorange);
+}

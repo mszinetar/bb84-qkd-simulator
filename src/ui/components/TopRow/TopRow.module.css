@@ -1,0 +1,45 @@
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;      
+  padding-top: 1.5rem;
+}
+
+.progressHeader {
+  background: var(--sky);
+  padding: 0.25rem 1rem;
+  border: 1px solid var(--ink);
+  border-radius: 10px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.progressLabel { font-weight: 500; }
+.progressCount { font-size: 0.75rem; color: var(--muted); }
+
+
+.steps {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(4, auto);
+  gap: 0.5rem 1rem;
+  padding: 0;
+  list-style: none;
+}
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.stepDone    { color: var(--ink); }
+.stepDone svg { color: var(--success); }
+.stepPending { color: var(--muted); }

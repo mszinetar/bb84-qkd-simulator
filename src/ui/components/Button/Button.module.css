@@ -1,0 +1,37 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 0;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.primary {
+  background: var(--ink);
+  color: #fff;
+}
+.primary:hover:not(:disabled) {
+  background: #262626;
+}
+
+.danger {
+    color: var(--danger);
+    background: none;
+}
+
+.danger:hover:not(:disabled) {
+    background: var(--danger-light);
+}
+
+.dangerBg {
+  color: var(--danger);
+  background-color: var(--danger-light);
+}
