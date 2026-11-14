@@ -1,6 +1,7 @@
 import { type QuantumBatch } from "../../core/quantumEngine";
 import { type Bit, type Basis, type TransmitRecord } from "../../core/types";
 import { prepareBatch, transmitBatch, receiveBatch } from "../../core/quantumEngine";
+import { evaluateBatch } from "../../core/postProcessor";
 
 let batch: QuantumBatch;
 let measureRecords: TransmitRecord[];
@@ -23,5 +24,6 @@ export function handleMeasure({ receiverBasis }: { receiverBasis: Basis[] }) {
 
     return measureRecords;
 }
+
 
 

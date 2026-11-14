@@ -19,7 +19,7 @@ function printLedger(records: TransmitRecord[]) {
         'Sent in Basis': r.emittedBasis === 'rectilinear' ? '+' : 'x',
         'Sent Qubit Ref': r.emittedQubitRef,
         'Sent Quantum State': r.emittedState.ket,
-        'Intercept': r.interceptOptions.isIntercept ? 'YES' : 'NO',
+        'Intercept': r.interceptOptions?.isIntercept ? 'YES' : 'NO',
         'Received in Basis': r.receivedBasis ? (r.receivedBasis === 'rectilinear' ? '+' : 'x') : '-',
         'Reveived Bit': r.receivedBit ?? '-',
         'Received Qubit Ref': r.receivedQubitRef,
@@ -133,7 +133,7 @@ rl.on('line', async (line) => {
                 console.log(`\n[ Final Summary ]`);
 
                 console.log('\n[ Privacy Amplification Budget ]');
-                console.log(`Reconciled Raw Bits:     ${result.metrics.senderRawKey.length}`);
+                console.log(`  Reconciled Raw Bits:     ${result.metrics.senderRawKey.length}`);
                 console.log(`- Quantum Eavesdrop: ~${(result.metrics.senderRawKey.length * binaryEntropy(result.metrics.qber)).toFixed(1)} bits (from QBER ${ (result.metrics.qber * 100).toFixed(2) }%)`);
                 console.log(`- Classical Parity Leak: ${result.metrics.parityBitsLeaked} bits (from Cascade)`);
                 console.log(`-------------------------------------------`);

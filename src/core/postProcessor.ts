@@ -25,6 +25,8 @@ export type QBERMetrics = {
     readonly isKeyConfirmed: boolean;
     readonly passes: PassTelemetry[];
     readonly secureKeyLength: number;
+    readonly senderFinalKey?: Bit[];
+    readonly receiverFinalKey?: Bit[];
 };
 
 export type PostProcessResult = {
@@ -147,6 +149,46 @@ export function siftBatch(records: TransmitRecord[]): TransmitRecord[] {
   });
 }
 
+export function amplifyPrivacy(
+    reconciledKey: Bit[],
+    targetLength: number,
+    seed: number = 1337
+): Bit[] {
+    const n = reconciledKey.length;
+    if (targetLength <= 0 || n === 0) return [];
+    if (targetLength >= n) return [...reconciledKey];
+
+    const seedLength = targetLength + n - 1;
+    const toeplitzSeed: Bit[] = [];
+    let s = seed;
+    for (let i = 0; i < seedLength; i++) {
+        s = (s * 9301 + 49297) % 233280;
+        toeplitzSeed.push((s / 233280) > 0.5 ? 1 : 0);
+    }
+
+    const finalKey: Bit[] = [];
+    for (let row = 0; row < targetLength; row++) {
+        let bitSum = 0;
+        for (let col = 0; col < n; col++) {
+            const matrixVal = toeplitzSeed[row - col + (n - 1)];
+            bitSum ^= (matrixVal & reconciledKey[col]);
+        }
+        finalKey.push(bitSum as Bit);
+    }
+
+    return finalKey;
+}
+
+export function bitsToHex(bits: Bit[]): string {
+    if (bits.length === 0) return '';
+    let hex = '';
+    for (let i = 0; i < bits.length; i += 4) {
+        const chunk = bits.slice(i, i + 4).join('').padEnd(4, '0');
+        hex += parseInt(chunk, 2).toString(16).toUpperCase();
+    }
+    return hex;
+}
+
 export async function evaluateBatch(
   records: TransmitRecord[],
   sacrificeRatio: number = 0.3,
@@ -216,9 +258,10 @@ export async function evaluateBatch(
 
 
     if (isSecure && senderRawKey.length > 0) {
-        let currentBlockSize = 8;
+        
+        let currentBlockSize = Math.min(8, Math.max(2, Math.floor(senderRawKey.length / 4)));
 
-        for (let pass = 1; pass <= 4; pass++) {
+        for (let pass = 1; pass <= 8; pass++) {
             const perm = pass === 1 
                 ? Array.from({ length: senderRawKey.length }, (_, i) => i) 
                 : getPermutation(senderRawKey.length, pass * 42);
@@ -249,11 +292,12 @@ export async function evaluateBatch(
                 break;
             }
 
-            currentBlockSize *= 2;
-
+            currentBlockSize = Math.min(
+                currentBlockSize * 2,
+                Math.max(2, Math.floor(senderRawKey.length / 2))
+            );
         }
     }
-
     const secureKeyLength = (isSecure && isKeyConfirmed)
         ? calculateSecureKeyLength(senderRawKey.length, qber, totalParityBitsLeaked)
         : 0;

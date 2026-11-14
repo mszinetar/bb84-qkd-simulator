@@ -111,7 +111,7 @@
 }
 
 .rowGreyed {
-  opacity: 0.3;
+  opacity: 0.25;
   transition: opacity 0.2s ease;
 }
 

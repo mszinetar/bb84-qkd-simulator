@@ -1,6 +1,11 @@
 import { type TransmitRecord, type Bit, type Basis } from '../../core/types.ts'; 
 import { type QBERMetrics } from '../../core/postProcessor.ts';
 
+export type AbortReason = 
+  | "QberViolation"
+  | "manualAbort"
+  |  undefined;
+
 export type SimulatorPhase = 
   | 'UNINITIALISED'  
   | 'CONFIGURED'     
@@ -29,12 +34,12 @@ export interface SimulatorConfig {
   ReceiverBases: Basis[];
 }
 
-export interface LogEntry {
-  id: string;
-  timestamp: Date;
+export type LogEntry = {
+  id?: string;
+  title: string;
   message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
-}
+  type: "peach" | "grey" | "sky" | "red" | "green";
+};
 
 export interface SimulatorState {
   phase: SimulatorPhase;
@@ -42,12 +47,13 @@ export interface SimulatorState {
   logs: LogEntry[];
   records: TransmitRecord[];
   metrics: QBERMetrics | null;
+  abortReason?: AbortReason;
 }
 
 export const INITIAL_STATE: SimulatorState = {
   phase: "UNINITIALISED",
   config: null,
-  logs: [],
+  logs: [{title: "Uninitialised", message: "Configure the simulator", type: "peach"}],
   records: [],
   metrics: null,
 };

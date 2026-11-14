@@ -14,18 +14,19 @@ type DashBoardProps = {
     onStep: () => void;
     onAbort: () => void;
     onStart: () => void;
+    onRestart: () => void;
 };
 
-export default function Dashboard({ state, onConfigure, onStep, onAbort, onStart }: DashBoardProps) {
+export default function Dashboard({ state, onConfigure, onStep, onAbort, onStart, onRestart }: DashBoardProps) {
     return(
         <div className={styles.frame}>
 
             <div className={styles.column}>
-                <TransmissionPanel state={state} onConfigure={onConfigure} onStart={onStart} />
+                <TransmissionPanel state={state} onConfigure={onConfigure} onStart={onStart} onRestart={onRestart} />
                 <MetricsPanel state={state} />
             </div>
 
-            <InfographicPanel />
+            <InfographicPanel state={state} />
 
             <div className={styles.column}>
                 <StatusPanel phase={state.phase} />
