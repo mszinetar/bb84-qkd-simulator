@@ -19,6 +19,7 @@ export default function TransmissionPanel({ state, onConfigure, onStart, onResta
     TRANSMITTED:   <ActiveView state={state} />,
     MEASURED:      <ActiveView state={state} />,
     SIFTED:        <ActiveView state={state} />,
+    SAMPLED:        <ActiveView state={state} />,
     RECONCILED:        <ActiveView state={state} />,
     CONFIRMED:     <ConfirmedView state={state} onRestart={onRestart} />,
     ABORTED:       <AbortedView onRestart={onRestart} state={state}/>,
@@ -123,7 +124,6 @@ function ActiveView({ state }: { state: SimulatorState }) {
             key={idx}
             style={{
               display: "grid",
-              // Alice | arrow | Eve | Bob | arrow | Funnel | arrow | SiftedBit | Hammer | ReconciledBit
               gridTemplateColumns: "70px 24px 24px 70px 24px 24px 24px 28px 24px 28px",
               alignItems: "center",
               justifyItems: "center",
@@ -131,7 +131,6 @@ function ActiveView({ state }: { state: SimulatorState }) {
               opacity: record.isSacrificed ? "0.2" : "1",
             }}
           >
-            {/* 1. Alice Emitted */}
             <div
               style={{
                 background: "var(--sky)",
@@ -148,14 +147,14 @@ function ActiveView({ state }: { state: SimulatorState }) {
               {record.emittedBasis === "rectilinear" ? <BadgePlus size={18} /> : <BadgeX size={18} />}
             </div>
 
-            {/* 2. Channel Arrow 1 */}
+            
             {isTransmittedOrLater ? (
               <MoveRight size={18} color={record.interceptOptions?.isIntercept ? "var(--danger)" : "var(--ok)"} />
             ) : (
               <span />
             )}
 
-            {/* 3. Eve Intercept */}
+            
             {isTransmittedOrLater ? (
               record.interceptOptions?.isIntercept ? (
                 <CircleAlert size={18} color="var(--danger)" />
@@ -166,7 +165,7 @@ function ActiveView({ state }: { state: SimulatorState }) {
               <span />
             )}
 
-            {/* 4. Bob Measured */}
+            
             {isMeasuredOrLater ? (
               <div
                 style={{
@@ -187,20 +186,16 @@ function ActiveView({ state }: { state: SimulatorState }) {
               <span />
             )}
 
-            {/* 5. Arrow to Funnel */}
             {isSiftedOrLater ? <MoveRight size={18} /> : <span />}
 
-            {/* 6. Sift Funnel */}
             {isSiftedOrLater ? (
               record.isSifted ? <Funnel size={18} color="var(--ok)" /> : <FunnelX size={18} color="var(--danger)" />
             ) : (
               <span />
             )}
 
-            {/* 7. Arrow to Sifted bit */}
             {isSiftedOrLater && record.isSifted ? <MoveRight size={18} /> : <span />}
 
-            {/* 8. Sifted Bit outcome */}
             {isSiftedOrLater && record.isSifted ? (
               <div
                 style={{
@@ -216,14 +211,12 @@ function ActiveView({ state }: { state: SimulatorState }) {
               <span />
             )}
 
-            {/* 9. Reconcile Hammer */}
             {isReconciledOrLater && record.isSifted && !record.isSacrificed && isError ? (
               <Hammer size={18} />
             ) : (
               <span />
             )}
 
-            {/* 10. Reconciled Bit */}
             {isReconciledOrLater && record.isSifted && !record.isSacrificed && isError ? (
               <div
                 style={{

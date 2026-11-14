@@ -11,6 +11,7 @@ type MetricsPanelProps = {
 export default function MetricsPanel({ state }: MetricsPanelProps) {
   const isTransmittedOrLater = PHASE_ORDER.indexOf(state.phase) >= PHASE_ORDER.indexOf("TRANSMITTED");
   const isSiftedOrLater = PHASE_ORDER.indexOf(state.phase) >= PHASE_ORDER.indexOf("SIFTED");
+  const isSampledOrLater = PHASE_ORDER.indexOf(state.phase) >= PHASE_ORDER.indexOf("SAMPLED");
   const isAborted = state.phase === "ABORTED";
 
   return (
@@ -25,7 +26,8 @@ export default function MetricsPanel({ state }: MetricsPanelProps) {
            (isAborted ? state.records?.filter((r) => r.isSifted).length.toString().concat(" bits") : "-")} tone="peach-blackborder" />
           <Tile label="Public Sample" value={state.metrics?.sampleSize.toString().concat(" bits")} tone="peach-blackborder" />
            <Tile label="Public Errors" value={state.metrics?.errorCount.toString().concat(" bits")} tone="peach-blackborder" />
-          <Tile label="QBER" value={state.metrics ? ((state.metrics?.qber*100).toFixed(2)).toString().concat("%") : "-"} tone={state.abortReason === "QberViolation" ? "red" : "peach-blackborder"} />
+          <Tile label="QBER" value={state.metrics ? ((state.metrics?.qber*100).toFixed(2)).toString().concat("%") : "-"} 
+          tone={isSampledOrLater ? (!state.metrics?.isSecure ? "red" : "peach-blackborder") : (state.phase === "ABORTED" && state.abortReason === "QberViolation" ? "red" : "peach-blackborder")} />
       </div>
     </Panel>
   );

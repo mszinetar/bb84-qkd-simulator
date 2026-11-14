@@ -3,6 +3,7 @@ import { Panel } from "../Panel/Panel";
 import { Tile } from "../Tile/Tile";
 import { type SimulatorState } from "../../config/simulatorConfig";
 import { binaryEntropy } from "../../../core/postProcessor";
+import { PHASE_ORDER } from "../../config/simulatorConfig";
 
 type InfographicPanelProps = {
   state: SimulatorState;
@@ -15,7 +16,6 @@ type ColumnDatum = {
   color: string;
 };
 
-// Solves 1 - h2(q) - leakRatio = 0 for q in [0, 0.5]
 function calculateZeroYieldCutoff(rawLen: number, parityLeaked: number): number {
   if (rawLen <= 0) return 0.11;
   const targetEntropy = 1 - parityLeaked / rawLen;
@@ -45,7 +45,6 @@ function VectorColumnChart({
   height?: number;
 }) {
   const maxVal = Math.max(...data.map((d) => d.value), 1);
-  // Add 18% headroom so top value labels never clip
   const scaleMax = maxVal * 1.18;
 
   const padTop = 18;
@@ -67,7 +66,6 @@ function VectorColumnChart({
       viewBox={`0 0 ${width} ${height}`}
       style={{ display: "block", overflow: "visible" }}
     >
-      {/* Subtle horizontal gridlines (25%, 50%, 75%, 100% of maxVal) */}
       {[0.25, 0.5, 0.75, 1].map((ratio) => {
         const y = baselineY - ((maxVal * ratio) / scaleMax) * plotHeight;
         return (
@@ -84,7 +82,6 @@ function VectorColumnChart({
         );
       })}
 
-      {/* Baseline X-axis */}
       <line
         x1={padLeft}
         y1={baselineY}
@@ -94,7 +91,6 @@ function VectorColumnChart({
         strokeWidth="2"
       />
 
-      {/* Columns */}
       {data.map((item, idx) => {
         const barHeight = Math.max(
           item.value > 0 ? 3 : 0,
@@ -124,7 +120,6 @@ function VectorColumnChart({
               />
             )}
 
-            {/* Value label above bar */}
             <text
               x={x + barWidth / 2}
               y={y - 5}
@@ -137,7 +132,6 @@ function VectorColumnChart({
               {formattedVal}
             </text>
 
-            {/* Category label below baseline */}
             <text
               x={x + barWidth / 2}
               y={baselineY + 15}
@@ -156,9 +150,11 @@ function VectorColumnChart({
 }
 
 export default function InfographicPanel({ state }: InfographicPanelProps) {
+  const isReconciledOrLater = PHASE_ORDER.indexOf(state.phase) >= PHASE_ORDER.indexOf("RECONCILED");
+
   const metrics = state.metrics;
   const hasData = Boolean(
-    metrics && metrics.senderRawKey.length > 0 && state.phase !== "ABORTED"
+   isReconciledOrLater && metrics && metrics.senderRawKey.length > 0 && state.phase !== "ABORTED"
   );
 
   const rawSiftedLen = metrics?.senderRawKey.length ?? 0;
@@ -179,10 +175,10 @@ export default function InfographicPanel({ state }: InfographicPanelProps) {
       : null;
 
   const colors = {
-    raw: "#FBBF77",     // Light Amber (Raw Sifted Key)
-    quantum: "#F97316", // Bright Orange (Quantum Leak)
-    parity: "#C2410C",  // Burnt Orange (Parity Leak)
-    net: "#9A3412",     // Deep Rust/Brown (Net Extractable)
+    raw: "#FBBF77",    
+    quantum: "#F97316",
+    parity: "#C2410C", 
+    net: "#9A3412",    
   };
 
   const columnData: ColumnDatum[] = [
@@ -234,7 +230,6 @@ export default function InfographicPanel({ state }: InfographicPanelProps) {
           </span>
         </div>
 
-        {/* Main Two-Column Body */}
         <div
           style={{
             display: "flex",
@@ -244,7 +239,6 @@ export default function InfographicPanel({ state }: InfographicPanelProps) {
             flex: 1,
           }}
         >
-          {/* Left Column: Column Chart + Zero-Yield Cutoff Tile */}
           <div
             style={{
               display: "flex",
@@ -289,11 +283,10 @@ export default function InfographicPanel({ state }: InfographicPanelProps) {
 
             <div
               style={{ position: "relative", width: "100%" }}
-              title="Maximum QBER before quantum and parity leakage consume 100% of the raw key."
             >
               <Tile
                 label="Zero-Yield Cutoff"
-                value={cutoffQber !== null ? `${(cutoffQber * 100).toFixed(2)}%` : "-"}
+                value={cutoffQber !== null ? `${(cutoffQber * 100).toFixed(2)}% QBER` : "- % QBER"}
                 tone="sky"
               />
               <CircleHelp
@@ -309,7 +302,6 @@ export default function InfographicPanel({ state }: InfographicPanelProps) {
             </div>
           </div>
 
-          {/* Right Column: 4 Legend Metric Tiles */}
           <div
             style={{
               display: "flex",

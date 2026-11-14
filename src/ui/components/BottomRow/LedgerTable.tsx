@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import type { Basis, TransmitRecord } from "../../../core/types";
 import styles from "./BottomRow.module.css";
 import { BadgePlus, BadgeX, } from "lucide-react";
+import type { SimulatorPhase } from "../../config/simulatorConfig";
+import { PHASE_ORDER } from "../../config/simulatorConfig";
 
 const BASIS_SYMBOL: Record<Basis, ReactNode> = {
   rectilinear: <BadgePlus size={16} style={{display: "inline"}}/>,
@@ -12,10 +14,13 @@ const COLUMNS = ["Seq", "Sent", "Sent Qubit & State", "Intercept",  "Received Qu
 
 type Props = {
   records: TransmitRecord[];
-  showSifted: boolean; // false until the sifting stage, so "not sifted yet" isn't shown as "discarded"
+  showSifted: boolean; 
+  phase: SimulatorPhase;
 };
 
-export default function LedgerTable({ records, showSifted }: Props) {
+export default function LedgerTable({ records, showSifted , phase }: Props) {
+  const isSampledOrLater = PHASE_ORDER.indexOf(phase) >= PHASE_ORDER.indexOf("SAMPLED") || ( phase === "ABORTED");
+  
   return (
     <div className={styles.scroll}>
       <table className={styles.table}>
@@ -88,11 +93,8 @@ export default function LedgerTable({ records, showSifted }: Props) {
                 <td>
                   {!showSifted ? (
                     <span className={styles.muted}>-</span>
-                  ) : r.isSifted ? (
-                    <span className={styles.badgeOk}>Sifted</span>
-                  ) : (
-                    <span className={styles.badgeDanger}>Discarded</span>
-                  )}
+                  ) : r.isSifted ? ( isSampledOrLater ? (r.isSacrificed ? (<span className={styles.badgeWarn}>Check Bit</span>) : (<span className={styles.badgeOk}>Key Bit </span>)) : (<span className={styles.badgeOk}>Sifted</span>)) : 
+                  (<span className={styles.badgeDanger}>Discarded</span>)}
                 </td>
               </tr>
             ))

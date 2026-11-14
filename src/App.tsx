@@ -87,10 +87,25 @@ export default function App() {
               state.config?.sacrificeRatio!, 
               state.config?.maxQber!
             );
+            const shouldWarn = !result.metrics.isSecure; 
+            const nextLogs: LogEntry[] = shouldWarn ? 
+            [
+              { title:  "Sampling", message: "Public sampling", type: "green"},
+              { title:  "Warning", message: `Sampled QBER of ${(result.metrics.qber*100).toFixed(2)}% exceeds ${(state.config?.maxQber!*100).toFixed(2)}% threshold. The simulation will abort`, type: "peach"},] : 
+              [{ title:  "Sampling", message: "Public sampling", type: "green"}];
+            setState((s) => ({
+              ...s,
+              records: result.records,
+              metrics: result.metrics, 
+              phase: "SAMPLED",
+              logs: [...s.logs, ...nextLogs]
+            }));
+            break;
 
-            const nextPhase = result.metrics?.isSecure ? "RECONCILED" : "ABORTED";
+            case "SAMPLED": {
+               const nextPhase = state.metrics?.isSecure ? "RECONCILED" : "ABORTED";
 
-            const passLogs: LogEntry[] = (result.metrics?.passes ?? []).map((p) => ({
+            const passLogs: LogEntry[] = (state.metrics?.passes ?? []).map((p) => ({
               title: `Reconciliation · Pass #${p.passNumber}`,
               message:
                 `Block size: ${p.blockSize} \n Corrected: ${p.errorsCorrected} errors \n` +
@@ -100,13 +115,13 @@ export default function App() {
               type: p.isMatch ? "green" : "peach",
             }));
 
-            const nextLogs: LogEntry[] = result.metrics?.isSecure
+            const nextLogs: LogEntry[] = state.metrics?.isSecure
               ? [...passLogs, {title: "Reconciliation · Finished", message: "Key confirmed", type: "green"},
                               {title: "Reconciliation · Final Summary", message: 
-                                ` Reconciled Raw Bits: ${result.metrics.senderRawKey.length} \n` + 
-                                `Quantum Eavesdrop: approx. ${(result.metrics.senderRawKey.length * binaryEntropy(result.metrics.qber)).toFixed(1)} bits` +
-                                `\nParity Leak From Cascade: ${result.metrics.parityBitsLeaked} bits \n` +
-                                `Final Pure Secret Key:   ${result.metrics.secureKeyLength} bits`,
+                                ` Reconciled Raw Bits: ${state.metrics.senderRawKey.length} \n` + 
+                                `Quantum Eavesdrop: approx. ${(state.metrics.senderRawKey.length * binaryEntropy(state.metrics.qber)).toFixed(1)} bits` +
+                                `\nParity Leak From Cascade: ${state.metrics.parityBitsLeaked} bits \n` +
+                                `Final Pure Secret Key:   ${state.metrics.secureKeyLength} bits`,
                                  type: "sky"}
                 ]
               : [
@@ -117,17 +132,16 @@ export default function App() {
                   },
                 ];
 
-            const abortReason = result.metrics?.isSecure ? undefined : "QberViolation";
+            const abortReason = state.metrics?.isSecure ? undefined : "QberViolation";
 
             setState((s) => ({
               ...s,
-              records: result.records,
-              metrics: result.metrics,
               phase: nextPhase,
               abortReason: abortReason,
               logs: [...s.logs, ...nextLogs],
             }));
             break;
+            }
 
             case "RECONCILED": {
             if (!state.metrics) break;
@@ -204,7 +218,7 @@ export default function App() {
           onRestart={handleRestart}
         />
         <div className={stlyes.bottom}>
-          <LedgerPanel records={state.records} phase={state.phase}/>
+          <LedgerPanel records={state.records} phase={state.phase} state={state}/>
           <ActivityLog logs={state.logs} />
         </div>
       </main>

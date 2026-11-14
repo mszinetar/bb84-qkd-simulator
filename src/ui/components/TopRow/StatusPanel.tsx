@@ -10,6 +10,7 @@ const STEPS: { label: string; phase: SimulatorPhase }[] = [
   { label: "Transmitted", phase: "TRANSMITTED" },
   { label: "Measured",    phase: "MEASURED" },
   { label: "Sifted",      phase: "SIFTED" },
+  { label: "Sampled",     phase: "SAMPLED" },
   { label: "Reconciled",  phase: "RECONCILED" },
   { label: "Confirmed",   phase: "CONFIRMED" },
 ];

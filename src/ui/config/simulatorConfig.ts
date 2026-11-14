@@ -12,14 +12,15 @@ export type SimulatorPhase =
   | 'PREPARED'       
   | 'TRANSMITTED'    
   | 'MEASURED'       
-  | 'SIFTED'         
+  | 'SIFTED'     
+  | 'SAMPLED'         
   | 'RECONCILED'     
   | 'CONFIRMED'      
   | 'ABORTED';       
 
 export const PHASE_ORDER: SimulatorPhase[] = [
   "UNINITIALISED", "CONFIGURED", "PREPARED", "TRANSMITTED",
-  "MEASURED", "SIFTED", "RECONCILED", "CONFIRMED",
+  "MEASURED", "SIFTED", "SAMPLED" ,"RECONCILED", "CONFIRMED",
 ];
 
 export interface SimulatorConfig {

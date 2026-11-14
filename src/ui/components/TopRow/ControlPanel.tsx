@@ -12,8 +12,8 @@ type ControlPanelProps = {
 
 export default function ControlPanel({ phase, onStep, onAbort }: ControlPanelProps) {
 
-  const CAN_STEP: SimulatorPhase[] = ["PREPARED","TRANSMITTED","MEASURED","SIFTED","RECONCILED"];
-  const CAN_ABORT: SimulatorPhase[] = ["CONFIGURED","PREPARED","TRANSMITTED","MEASURED","SIFTED","RECONCILED"];
+  const CAN_STEP: SimulatorPhase[] = ["PREPARED","TRANSMITTED","MEASURED","SIFTED", "SAMPLED", "RECONCILED"];
+  const CAN_ABORT: SimulatorPhase[] = ["CONFIGURED","PREPARED","TRANSMITTED","MEASURED","SIFTED", "SAMPLED", "RECONCILED"];
   return (
     <Panel title="Controls" icon={<Joystick />} shadow={true}>
      <div className={styles.controls}>
