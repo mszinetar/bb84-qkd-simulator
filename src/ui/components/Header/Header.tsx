@@ -13,7 +13,7 @@ export default function Header() {
 
       <nav className={styles.links} aria-label="Primary">
         <a href="https://github.com/mszinetar/bb84-qkd-simulator">
-          <img src="/github-svgrepo-com.svg" alt="github icon" />
+          <img src="src/assets/github-svgrepo-com.svg" alt="github icon" />
         </a>
       </nav>
     </header>
