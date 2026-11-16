@@ -1,5 +1,6 @@
 import styles from "./Header.module.css";
 import { AsteriskIcon } from "lucide-react";
+import { GitHubIcon } from "../../../assets/GithubIcon";
 
 export default function Header() {
   return (
@@ -12,8 +13,11 @@ export default function Header() {
       </div>
 
       <nav className={styles.links} aria-label="Primary">
-        <a href="https://github.com/mszinetar/bb84-qkd-simulator">
-          <img src="src/assets/github-svgrepo-com.svg" alt="github icon" />
+        <a
+          href="https://github.com/mszinetar/bb84-qkd-simulator"
+          aria-label="GitHub repository"
+        >
+          <GitHubIcon />
         </a>
       </nav>
     </header>
