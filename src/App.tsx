@@ -44,7 +44,7 @@ export default function App() {
   };
 
   const handleRestart = () => {
-    setState((s) => INITIAL_STATE);
+    setState(() => INITIAL_STATE);
   }
 
 
