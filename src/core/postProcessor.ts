@@ -179,16 +179,6 @@ export function amplifyPrivacy(
     return finalKey;
 }
 
-export function bitsToHex(bits: Bit[]): string {
-    if (bits.length === 0) return '';
-    let hex = '';
-    for (let i = 0; i < bits.length; i += 4) {
-        const chunk = bits.slice(i, i + 4).join('').padEnd(4, '0');
-        hex += parseInt(chunk, 2).toString(16).toUpperCase();
-    }
-    return hex;
-}
-
 export async function evaluateBatch(
   records: TransmitRecord[],
   sacrificeRatio: number = 0.3,

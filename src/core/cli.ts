@@ -121,7 +121,7 @@ rl.on('line', async (line) => {
                     console.log(`- Parity bits leaked: ${pass.parityBitsExchanged} bits.`);
                     
                     if (!pass.isMatch) {
-                        console.log(`- Intermediate Status: ⚠️ Even-error collision detected! ${pass.errorsRemaining} errors survived.`);
+                        console.log(`- Intermediate Status:  Even-error collision detected! ${pass.errorsRemaining} errors survived.`);
                     }
 
                     console.log(`\n[ Key Confirmation Check #${pass.passNumber} ]`);
